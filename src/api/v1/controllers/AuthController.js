@@ -1,6 +1,7 @@
 const UserModel = require("./../models/UserModel");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const config = require('./../../../config/config.json')
 
 const login = async function(req, res){
     try {
@@ -49,5 +50,12 @@ const refresh_token = async function(req, res){
         console.log(error)
     }
 }
-
-module.exports = { login, refresh_token }
+const logout = function(req, res) {
+    const token = req.headers['authorization'].split(' ')[1]; // Get the token from the request headers
+    // Add the token to the blacklist or revoked token list
+    // You can store the blacklisted tokens in a database or cache
+    // For simplicity, I'll use an array here:
+    config.blacklistedTokens.push(token);
+    res.sendStatus(200);
+  }
+module.exports = { login, refresh_token, logout }

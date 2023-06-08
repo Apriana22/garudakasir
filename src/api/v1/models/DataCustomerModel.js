@@ -1,64 +1,142 @@
-const Sequelize = require("sequelize");
-const { Db } = require("../../../config/database")
-const DataPemesananModel = require("./DataPemesananModel");
-const DataMejaModel = require("./DataMejaModel");
-const ProductModel = require("./ProductModel");
+const Sequelize = require('sequelize');
+const {Db} = require('../../../config/database');
+const DataPemesananModel = require('./DataPemesananModel');
+const DataMejaModel = require('./DataMejaModel');
+const ProductModel = require('./ProductModel');
 
-const DataCustomerModel = Db.define("data_customer", {
+const DataCustomerModel = Db.define(
+  'member',
+  {
     id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
-        allowNull: false,
-        primaryKey: true,
-        field: 'id'
+      type: Sequelize.UUID,
+      defaultValue: Sequelize.UUIDV4,
+      allowNull: false,
+      primaryKey: true,
+      field: 'id',
     },
-    id_meja: {
-        type: Sequelize.UUID,
-        max: 50,
-        allowNull: true,
-        field: 'id_meja'
+    code: {
+      type: Sequelize.STRING(100),
+      allowNull: true,
+      field: 'code',
     },
-    id_pemesanan: {
-        type: Sequelize.ARRAY( Sequelize.STRING ),
-        allowNull: true,
-        field: 'id_pemesanan'
+    name: {
+      type: Sequelize.STRING(100),
+      allowNull: false,
+      field: 'name',
     },
-    nama_customer: {
-        type: Sequelize.STRING,
-        max: 50,
-        defaultValue: null,
-        field: 'nama_customer'
+    address: {
+      type: Sequelize.TEXT,
+      allowNull: true,
+      field: 'address',
     },
-    user_create: {
-        type: Sequelize.STRING,
-        max: 50,
-        defaultValue: null,
-        field: 'user_create'
+    city: {
+      type: Sequelize.STRING(255),
+      allowNull: true,
+      field: 'city',
+    },
+    province: {
+      type: Sequelize.STRING(255),
+      allowNull: true,
+      field: 'province',
+    },
+    country: {
+      type: Sequelize.STRING(255),
+      allowNull: true,
+      field: 'country',
+    },
+    postalCode: {
+      type: Sequelize.STRING(10),
+      allowNull: true,
+      field: 'postalCode',
+    },
+    receivableLimit: {
+      type: Sequelize.DECIMAL(15, 4),
+      allowNull: true,
+      field: 'receivableLimit',
+    },
+    tempoPiece: {
+      type: Sequelize.INTEGER,
+      allowNull: true,
+      field: 'tempoPiece',
+    },
+    typePiece: {
+      type: Sequelize.STRING(100),
+      allowNull: true,
+      field: 'typePiece',
+    },
+    accountNumber: {
+      type: Sequelize.STRING(100),
+      allowNull: true,
+      field: 'accountNumber',
+    },
+    accountName: {
+      type: Sequelize.STRING(255),
+      allowNull: true,
+      field: 'accountName',
+    },
+    bankName: {
+      type: Sequelize.STRING(255),
+      allowNull: true,
+      field: 'bankName',
+    },
+    memberLevel: {
+      type: Sequelize.STRING(50),
+      allowNull: true,
+      field: 'memberLevel',
+    },
+    phoneNumber: {
+      type: Sequelize.STRING(15),
+      allowNull: true,
+      field: 'phoneNumber',
+    },
+    email: {
+      type: Sequelize.STRING(100),
+      allowNull: true,
+      field: 'email',
+    },
+    userCreate: {
+      type: Sequelize.STRING(50),
+      allowNull: true,
+      field: 'userCreate',
     },
     createdAt: {
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW,
-        field: 'createdAt',
-        timestamps: true
+      type: Sequelize.DATE,
+      defaultValue: Sequelize.NOW,
+      allowNull: false,
+      field: 'createdAt',
     },
     updatedAt: {
-        type: Sequelize.DATE,
-        field: 'updatedAt',
-        timestamps: true
+      type: Sequelize.DATE,
+      allowNull: true,
+      field: 'updatedAt',
     },
+    deletedAt: {
+      type: Sequelize.DATE,
+      allowNull: true,
+      field: 'deletedAt',
+    },
+    serialNumber: {
+      type: Sequelize.INTEGER,
+      allowNull: true,
+      field: 'serialNumber',
+    },
+  },
+  {
+    freezeTableName: true,
+    timestamps: true,
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    deletedAt: 'deletedAt',
+    paranoid: true,
+  },
+);
 
-
-},
-
-    {
-    freezeTableName: true
-
-})
-
-DataCustomerModel.hasOne(DataMejaModel,{
-    foreignKey:"id_meja"
-})
-DataCustomerModel.hasMany(DataPemesananModel, { foreignKey: "id_customer", sourceKey: "id"});
-
+DataCustomerModel.hasOne(DataMejaModel, {
+  foreignKey: 'id_meja',
+});
+DataCustomerModel.hasMany(DataPemesananModel, {
+  foreignKey: 'salesOrderId',
+  sourceKey: 'id',
+});
 
 module.exports = DataCustomerModel;

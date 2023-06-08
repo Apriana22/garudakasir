@@ -1,81 +1,116 @@
 const Sequelize = require("sequelize");
-const { Db } = require("../../../config/database");
-const ProductModel = require("./ProductModel");
+const {Db} = require('../../../config/database');
+const ProductModel = require('./ProductModel');
+const DataCustomerModel = require("./DataCustomerModel");
 
-
-const DataPemesananModel = Db.define("data_pemesanan", {
+const DataPemesananModel = Db.define(
+  'sales_order_details',
+  {
     id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
-        allowNull: false,
-        primaryKey: true,
-        field: 'id'
+      type: Sequelize.UUID,
+      defaultValue: Sequelize.UUIDV4,
+      allowNull: false,
+      primaryKey: true,
+      field: 'id',
     },
-    id_product: {
-        type: Sequelize.UUID,
-        max: 50,
-        allowNull: false,
-        field: 'id_product'
+    salesOrderId: {
+      type: Sequelize.STRING(50),
+      allowNull: true,
+      field: 'salesOrderId',
     },
-    id_customer: {
-        type: Sequelize.UUID,
-        max: 50,
-        allowNull: true,
-        field: 'id_customer'
+    productId: {
+      type: Sequelize.STRING(50),
+      allowNull: true,
+      field: 'productId',
     },
-    invoice: {
-        type: Sequelize.STRING,
-        allowNull: true,
-        max: 50,
-        field: 'invoice'
+    conversionId: {
+      type: Sequelize.STRING(50),
+      allowNull: true,
+      field: 'conversionId',
     },
-    harga: {
-        type: Sequelize.DECIMAL,
-        field: 'harga'
+    quantityOrder: {
+      type: Sequelize.INTEGER(11),
+      allowNull: true,
+      field: 'quantityOrder',
     },
-    deskripsi: {
-        type: Sequelize.TEXT,
-        field: 'deskripsi'
+    quantityAccepted: {
+      type: Sequelize.INTEGER(11),
+      allowNull: true,
+      field: 'quantityAccepted',
     },
-    jumlah_pemesanan: {
-        type: Sequelize.INTEGER,
-        max: 11,
-        allowNull: false,
-        field: 'jumlah_pemesanan'
+    price: {
+      type: Sequelize.DECIMAL(15, 4),
+      allowNull: true,
+      field: 'price',
     },
-    status: {
-        type: Sequelize.BOOLEAN,
-        field: 'status',
-        allowNull: true,
-        defaultValue:0
+    percentDiscount: {
+      type: Sequelize.DECIMAL(6, 2),
+      allowNull: true,
+      field: 'percentDiscount',
     },
-    user_create: {
-        type: Sequelize.STRING,
-        max: 50,
-        defaultValue: null,
-        field: 'user_create'
+    nominalDiscount: {
+      type: Sequelize.DECIMAL(15, 4),
+      allowNull: true,
+      field: 'nominalDiscount',
+    },
+    subTotal: {
+      type: Sequelize.DECIMAL(15, 4),
+      allowNull: true,
+      field: 'subTotal',
+    },
+    percentTax: {
+      type: Sequelize.DECIMAL(6, 2),
+      allowNull: true,
+      field: 'percentTax',
+    },
+    nominalTax: {
+      type: Sequelize.DECIMAL(15, 4),
+      allowNull: true,
+      field: 'nominalTax',
+    },
+    expiredDate: {
+      type: Sequelize.DATEONLY,
+      allowNull: true,
+      field: 'expiredDate',
+    },
+    total: {
+      type: Sequelize.DECIMAL(15, 4),
+      allowNull: true,
+      field: 'total',
+    },
+    userCreate: {
+      type: Sequelize.STRING(50),
+      allowNull: true,
+      field: 'userCreate',
     },
     createdAt: {
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW,
-        field: 'createdAt',
-        timestamps: true
+      type: Sequelize.DATE,
+      allowNull: true,
+      field: 'createdAt',
     },
     updatedAt: {
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW,
-        field: 'updatedAt',
-        timestamps: true
+      type: Sequelize.DATE,
+      allowNull: true,
+      field: 'updatedAt',
     },
+    deletedAt: {
+      type: Sequelize.DATE,
+      allowNull: true,
+      field: 'deletedAt',
+    },
+  },
+  {
+    freezeTableName: true,
+  },
+);
 
-},
+DataPemesananModel.hasMany(ProductModel, {
+  foreignKey: 'id',
+  sourceKey: 'productId',
+});
 
-    {
-    freezeTableName: true
-
-})
-
-DataPemesananModel.hasMany(ProductModel, { foreignKey: "id", sourceKey: "id_product"});
-
+// DataPemesananModel.belongsTo(DataCustomerModel, {
+//   foreignKey: 'id',
+// });
 
 module.exports = DataPemesananModel;

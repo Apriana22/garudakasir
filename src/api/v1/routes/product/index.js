@@ -7,9 +7,9 @@ router.get("/", product.getAll)
 router.get("/brand/:brandId", product.getBrand)
 router.get("/type/:typeId", product.getType)
 router.get("/:id", product.getOne)
-router.post("/", product.post,uploadFile("image"))
+router.post("/", uploadFile("image"),product.post)
 router.delete("/:id", product.deleteOne)
-router.put('/:id', product.update,uploadFile("image"))
+router.put('/:id', uploadFile("image"),product.update)
 router.post('/stok', product.addStockQuantity)
 
 module.exports = router;
